@@ -56,8 +56,27 @@
   }
   .card:active{ cursor:grabbing; }
   .photo{ position:relative; flex:1; min-height:0; overflow:hidden; background:#171226; }
-  .photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; -webkit-user-drag:none; }
+  .slides{ position:absolute; inset:0; display:flex; transition:transform .3s ease; }
+  .slide{ width:100%; height:100%; flex-shrink:0; }
+  .slide img{ width:100%; height:100%; object-fit:contain; -webkit-user-drag:none; }
+  .chev{ position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%;
+    background:rgba(0,0,0,.3); color:rgba(255,255,255,.85); font-size:22px; line-height:1;
+    display:flex; align-items:center; justify-content:center; pointer-events:none; }
+  .chev.left{ left:8px; } .chev.right{ right:8px; }
+  .dots{ position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:6px; pointer-events:none; }
+  .dot{ width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,.45); transition:all .25s; }
+  .dot.active{ width:20px; background:#fff; }
   .tg-btn{ display:none; }
+
+  /* ── полноэкранный просмотр фото ───────── */
+  #viewerOverlay{ z-index:450; background:rgba(6,3,12,.97); flex-direction:column; touch-action:none; }
+  .viewer-close{ position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; width:40px; height:40px;
+    border-radius:50%; border:none; background:rgba(255,255,255,.12); color:#fff; font-size:16px; cursor:pointer; }
+  .viewer-count{ position:absolute; top:calc(22px + env(safe-area-inset-top)); left:0; right:0; text-align:center;
+    font-size:13px; color:var(--muted); }
+  .viewer-img{ flex:1; min-height:0; width:100%; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .viewer-img img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .viewer-hint{ padding:0 0 calc(18px + env(safe-area-inset-bottom)); font-size:12.5px; color:var(--muted); }
   .badge-online{ position:absolute; top:12px; right:12px; background:rgba(0,0,0,.45);
     backdrop-filter:blur(6px); border-radius:999px; padding:4px 10px; font-size:11.5px;
     font-weight:700; color:#7dff9b; }
@@ -166,8 +185,11 @@
 
 <main class="stage">
   <div class="card" id="card">
-    <div class="photo">
-      <img id="photoImg" src="roma.jpg" alt="Рома">
+    <div class="photo" id="photoArea">
+      <div class="slides" id="slides"></div>
+      <div class="chev left">‹</div>
+      <div class="chev right">›</div>
+      <div class="dots" id="dots"></div>
       <div class="badge-online">онлайн</div>
     </div>
     <div class="info">
@@ -221,6 +243,14 @@
 
 <!-- чат с автоответчиком удалён: настоящий Рома в телеграме -->
 
+<!-- полноэкранный просмотр фоток -->
+<div class="overlay" id="viewerOverlay">
+  <button class="viewer-close" id="viewerClose">✕</button>
+  <div class="viewer-count" id="viewerCount">1 / 3</div>
+  <div class="viewer-img" id="viewerImg"></div>
+  <div class="viewer-hint">свайпай ← → · тап — закрыть</div>
+</div>
+
 <script>
 (() => {
 "use strict";
@@ -234,6 +264,7 @@ const CONFIG = {
   name: "Рома",
   age: 32,
   tg: "radaykinro", // телеграм Ромы — сюда реально будут писать
+  photos: ["roma.jpg", "roma2.jpg", "roma3.jpg"],
   bio:
 `• Богатый: есть деньги на оплату нейросетей (по сайту видно)
 • Базовый минимум: моюсь и работаю
@@ -264,6 +295,58 @@ $("nameLine").textContent = CONFIG.name + ", " + CONFIG.age;
 $("bio").textContent = CONFIG.bio;
 const tgUrl = "https://t.me/" + CONFIG.tg;
 $("matchTgLink").href = tgUrl;
+
+/* ── карусель фоток ── */
+const photoArea = $("photoArea"), slidesEl = $("slides"), dotsEl = $("dots");
+let photoIdx = 0;
+CONFIG.photos.forEach((src, i) => {
+  const s = document.createElement("div");
+  s.className = "slide";
+  const im = document.createElement("img");
+  im.src = src; im.alt = CONFIG.name + " — фото " + (i + 1); im.draggable = false;
+  s.appendChild(im);
+  slidesEl.appendChild(s);
+  dotsEl.appendChild(document.createElement("span")).className = "dot";
+});
+function goTo(i) {
+  const n = CONFIG.photos.length;
+  photoIdx = ((i % n) + n) % n;
+  slidesEl.style.transform = `translateX(${-photoIdx * 100}%)`;
+  [...dotsEl.children].forEach((d, k) => d.classList.toggle("active", k === photoIdx));
+}
+goTo(0);
+
+/* ── просмотр на весь экран ── */
+const viewerOverlay = $("viewerOverlay"), viewerImg = $("viewerImg"), viewerCount = $("viewerCount");
+function setViewer(i) {
+  goTo(i);
+  viewerImg.innerHTML = "";
+  const im = document.createElement("img");
+  im.src = CONFIG.photos[photoIdx]; im.alt = CONFIG.name;
+  viewerImg.appendChild(im);
+  viewerCount.textContent = (photoIdx + 1) + " / " + CONFIG.photos.length;
+}
+function openViewer(i) {
+  setViewer(i);
+  viewerOverlay.classList.add("show");
+}
+$("viewerClose").addEventListener("click", () => viewerOverlay.classList.remove("show"));
+let vDrag = null;
+viewerOverlay.addEventListener("pointerdown", e => { vDrag = { x: e.clientX, moved: false }; });
+viewerOverlay.addEventListener("pointermove", e => {
+  if (vDrag && Math.abs(e.clientX - vDrag.x) > 10) vDrag.moved = true;
+});
+viewerOverlay.addEventListener("pointerup", e => {
+  if (!vDrag) return;
+  const dx = e.clientX - vDrag.x, moved = vDrag.moved;
+  vDrag = null;
+  if (moved) {
+    if (dx < -60) setViewer(photoIdx + 1);
+    else if (dx > 60) setViewer(photoIdx - 1);
+  } else {
+    viewerOverlay.classList.remove("show");
+  }
+});
 $("chips").innerHTML = CONFIG.chips.map(c => `<span class="chip">${c}</span>`).join("");
 document.title = "Знакомство с " + CONFIG.name + " 🔥";
 
@@ -348,7 +431,7 @@ card.addEventListener("pointerup", e => {
   drag = null;
   stampLike.style.opacity = 0; stampNope.style.opacity = 0;
   if (busy) return;
-  if (!moved) { tapPhoto(); resetCard(); return; }
+  if (!moved) { handleTap(e.clientX, e.clientY); resetCard(); return; }
   if (dx > 90) like(); else if (dx < -90) nope(); else resetCard();
 });
 card.addEventListener("pointercancel", () => { drag = null; resetCard(); });
@@ -361,8 +444,16 @@ function resetCard(spring = true) {
   if (!spring) card.style.transition = "";
 }
 
-/* тап по карточке — пасхалка */
-function tapPhoto() {
+/* тап по карточке: зоны карусели + пасхалка на описании */
+function handleTap(cx, cy) {
+  const r = photoArea.getBoundingClientRect();
+  if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) {
+    const x = (cx - r.left) / r.width;
+    if (x < 0.3) goTo(photoIdx - 1);
+    else if (x > 0.7) goTo(photoIdx + 1);
+    else openViewer(photoIdx);
+    return;
+  }
   photoTaps++;
   if (photoTaps === 5) {
     toast("Рома почувствовал, что на него смотрят 👀");
