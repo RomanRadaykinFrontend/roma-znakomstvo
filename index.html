@@ -53,7 +53,9 @@
     background:#11101e; border-radius:22px; overflow:hidden;
     box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06);
     touch-action:none; cursor:grab; will-change:transform;
+    transition:height .35s ease, width .35s ease;
   }
+  body.zen .card{ height:calc(100dvh - 20px); width:min(96vw,520px); }
   .card:active{ cursor:grabbing; }
   .photo{ position:relative; flex:1; min-height:0; overflow:hidden; background:#171226; }
   .slides{ position:absolute; inset:0; display:flex; transition:transform .3s ease; }
@@ -66,6 +68,10 @@
   .dots{ position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:6px; pointer-events:none; }
   .dot{ width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,.45); transition:all .25s; }
   .dot.active{ width:20px; background:#fff; }
+  .expand-btn{ position:absolute; top:12px; left:12px; width:36px; height:36px; border-radius:50%;
+    border:none; background:rgba(0,0,0,.35); color:#fff; font-size:14px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+  .expand-btn:active{ transform:scale(.9); }
   .tg-btn{ display:none; }
 
   /* ── полноэкранный просмотр фото ───────── */
@@ -83,7 +89,9 @@
   .badge-online::before{ content:"● "; animation:pulse 1.6s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
 
-  .info{ flex-shrink:0; background:#fbfbfe; color:#23202e; padding:12px 14px; }
+  .info{ flex-shrink:0; background:#fbfbfe; color:#23202e; padding:12px 14px; max-height:440px;
+    overflow:hidden; transition:max-height .35s ease, padding .35s ease, opacity .25s ease; }
+  body.zen .info{ max-height:0; padding-top:0; padding-bottom:0; opacity:0; }
   .info h1{ margin:0; font-size:22px; font-weight:900; }
   .verified{ font-size:14px; cursor:help; }
   .distance{ font-size:12px; color:#7a7590; margin:2px 0 8px; }
@@ -99,6 +107,8 @@
 
   .ticker{ margin-top:12px; font-size:12.5px; color:var(--muted); text-align:center;
     transition:opacity .4s; padding:0 20px; }
+  body.zen .ticker, body.zen .controls{ display:none; }
+  body.zen .sub{ visibility:hidden; }
 
   /* ── кнопки ────────────────────────────── */
   .controls{ flex-shrink:0; display:flex; align-items:center; justify-content:center; gap:14px;
@@ -190,6 +200,7 @@
       <div class="chev left">‹</div>
       <div class="chev right">›</div>
       <div class="dots" id="dots"></div>
+      <button class="expand-btn" id="expandBtn" title="показать побольше">⛶</button>
       <div class="badge-online">онлайн</div>
     </div>
     <div class="info">
@@ -347,6 +358,15 @@ viewerOverlay.addEventListener("pointerup", e => {
     viewerOverlay.classList.remove("show");
   }
 });
+
+/* ── зен-режим: карусель почти на весь экран ── */
+let zen = false;
+function toggleZen() {
+  zen = !zen;
+  document.body.classList.toggle("zen", zen);
+  $("expandBtn").textContent = zen ? "✕" : "⛶";
+}
+$("expandBtn").addEventListener("click", toggleZen);
 $("chips").innerHTML = CONFIG.chips.map(c => `<span class="chip">${c}</span>`).join("");
 document.title = "Знакомство с " + CONFIG.name + " 🔥";
 
@@ -407,6 +427,7 @@ function beep() {
 let drag = null;
 card.addEventListener("pointerdown", e => {
   if (busy) return;
+  if (e.target.closest && e.target.closest(".expand-btn")) return; // кнопка работает сама, без drag
   drag = { x: e.clientX, y: e.clientY, moved: false };
   try { card.setPointerCapture(e.pointerId); } catch (err) {}
   card.style.transition = "none";
@@ -442,6 +463,7 @@ function resetCard(spring = true) {
   card.style.transform = "";
   void card.offsetWidth; // reflow, чтобы «none» применился мгновенно
   if (!spring) card.style.transition = "";
+  setTimeout(() => { if (!drag) card.style.transition = ""; }, 500);
 }
 
 /* тап по карточке: зоны карусели + пасхалка на описании */
