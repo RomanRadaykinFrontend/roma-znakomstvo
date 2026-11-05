@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Знакомство с Ромой 🔥</title>
+<meta name="description" content="Кандидатов: 1. Шансов устоять: 0.">
+<meta property="og:title" content="Знакомство с Ромой 🔥">
+<meta property="og:description" content="Кандидатов: 1. Шансов устоять: 0.">
+<meta name="theme-color" content="#141021">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<style>
+  :root{
+    --bg1:#0f0c1d; --bg2:#1b1230;
+    --pink:#fd5068; --green:#2ce6a0; --blue:#3aa8ff; --purple:#a06ffb; --orange:#f7b733;
+    --text:#f4f2fa; --muted:rgba(244,242,250,.55);
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; }
+  body{
+    height:100vh; height:100dvh; overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(253,80,104,.18), transparent 60%),
+      radial-gradient(700px 500px at -10% 100%, rgba(160,111,251,.16), transparent 60%),
+      linear-gradient(165deg, var(--bg1), var(--bg2));
+    user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+    overscroll-behavior:none;
+    display:flex; flex-direction:column;
+  }
+
+  /* ── шапка ─────────────────────────────── */
+  .topbar{ padding:calc(10px + env(safe-area-inset-top)) 16px 6px; text-align:center; flex-shrink:0; }
+  .logo{ font-size:20px; font-weight:900; letter-spacing:.3px; }
+  .logo .flame{ display:inline-block; animation:flicker 2.2s infinite; }
+  .sub{ margin-top:2px; font-size:12px; color:var(--muted); }
+  .sub b{ color:#ffb3c0; }
+  @keyframes flicker{ 0%,100%{transform:scale(1) rotate(-2deg)} 50%{transform:scale(1.12) rotate(3deg)} }
+
+  /* ── фон: летающие сердечки ─────────────── */
+  .bg-heart{ position:fixed; bottom:-8vh; opacity:.07; pointer-events:none; z-index:0;
+    animation:bgFloat linear infinite alternate; }
+  @keyframes bgFloat{ from{ transform:translateY(0) rotate(-8deg);} to{ transform:translateY(-105vh) rotate(10deg);} }
+
+  /* ── сцена с карточкой ─────────────────── */
+  .stage{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    position:relative; min-height:0; padding:8px 0 4px; z-index:1; }
+  .card{
+    position:relative; display:flex; flex-direction:column;
+    width:min(92vw,400px); height:min(70dvh,640px);
+    background:#11101e; border-radius:22px; overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06);
+    touch-action:none; cursor:grab; will-change:transform;
+  }
+  .card:active{ cursor:grabbing; }
+  .photo{ position:relative; flex:1; min-height:0; overflow:hidden; background:linear-gradient(150deg,#3d1d8f,#b31286 55%,#fd5068); }
+  .photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; -webkit-user-drag:none; }
+  .photo-fallback{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center; padding:24px; gap:8px; }
+  .pf-emoji{ font-size:64px; animation:peek 3s ease-in-out infinite; }
+  @keyframes peek{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .pf-title{ font-size:19px; font-weight:900; letter-spacing:2px; text-transform:uppercase; }
+  .pf-text{ font-size:12.5px; color:rgba(255,255,255,.8); line-height:1.5; }
+  .badge-online{ position:absolute; top:12px; right:12px; background:rgba(0,0,0,.45);
+    backdrop-filter:blur(6px); border-radius:999px; padding:4px 10px; font-size:11.5px;
+    font-weight:700; color:#7dff9b; }
+  .badge-online::before{ content:"● "; animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+
+  .info{ flex-shrink:0; background:#fbfbfe; color:#23202e; padding:14px 16px 14px; }
+  .info h1{ margin:0; font-size:22px; font-weight:900; }
+  .verified{ font-size:14px; cursor:help; }
+  .distance{ font-size:12px; color:#7a7590; margin:2px 0 8px; }
+  .bio{ margin:0; font-size:13.5px; line-height:1.5; white-space:pre-line; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip{ font-size:11px; font-weight:700; color:#4a4560; border:1.5px solid #d9d6e6;
+    border-radius:999px; padding:4px 10px; }
+
+  .stamp{ position:absolute; top:34px; padding:5px 14px; border-radius:10px; font-size:24px;
+    font-weight:900; letter-spacing:2px; border:4px solid; opacity:0; pointer-events:none; }
+  .stamp.nope{ left:18px; color:var(--pink); border-color:var(--pink); transform:rotate(-14deg); }
+  .stamp.like{ right:18px; color:var(--green); border-color:var(--green); transform:rotate(14deg); }
+
+  .ticker{ margin-top:12px; font-size:12.5px; color:var(--muted); text-align:center;
+    transition:opacity .4s; padding:0 20px; }
+
+  /* ── кнопки ────────────────────────────── */
+  .controls{ flex-shrink:0; display:flex; align-items:center; justify-content:center; gap:14px;
+    padding:12px 16px calc(18px + env(safe-area-inset-bottom)); z-index:2; }
+  .ctl{ border:none; border-radius:50%; background:#fff; cursor:pointer;
+    box-shadow:0 10px 26px rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
+    transition:transform .15s; touch-action:manipulation; }
+  .ctl:active{ transform:scale(.86); }
+  .ctl.small{ width:46px; height:46px; font-size:19px; }
+  .ctl.med{ width:56px; height:56px; font-size:24px; }
+  .ctl.big{ width:68px; height:68px; font-size:29px; }
+  .ctl.red{ color:var(--pink); } .ctl.green{ color:var(--green); }
+  .ctl.blue{ color:var(--blue); background:linear-gradient(#fff,#eef6ff); }
+  .ctl.purple{ color:var(--purple); } .ctl.orange{ color:var(--orange); }
+
+  /* ── тосты ─────────────────────────────── */
+  .toasts{ position:fixed; top:calc(14px + env(safe-area-inset-top)); left:0; right:0; z-index:700;
+    display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none; }
+  .toast{ background:rgba(20,16,33,.92); backdrop-filter:blur(8px); color:#fff; font-size:14px;
+    font-weight:600; border-radius:999px; padding:10px 18px; max-width:88vw; text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.5); border:1px solid rgba(255,255,255,.12);
+    opacity:0; transform:translateY(-14px) scale(.95); transition:all .35s; }
+  .toast.show{ opacity:1; transform:translateY(0) scale(1); }
+
+  /* ── сердечки-дождь ────────────────────── */
+  .hearts-layer{ position:fixed; inset:0; pointer-events:none; z-index:800; overflow:hidden; }
+  .heart{ position:absolute; bottom:-10vh; animation:floatUp linear forwards; }
+  @keyframes floatUp{ 0%{ opacity:1; transform:translateY(0) rotate(-10deg); }
+    100%{ opacity:0; transform:translateY(-115vh) rotate(30deg); } }
+
+  /* ── оверлеи ───────────────────────────── */
+  .overlay{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transition:opacity .35s, visibility .35s; }
+  .overlay.show{ opacity:1; visibility:visible; }
+
+  #forceOverlay{ z-index:600; background:rgba(12,5,22,.93); flex-direction:column; gap:12px; padding:24px; }
+  .force-text{ font-size:clamp(26px,8.5vw,58px); font-weight:900; text-align:center; letter-spacing:1px;
+    background:linear-gradient(90deg,#ff5e7e,#ffb86c); -webkit-background-clip:text; background-clip:text;
+    color:transparent; animation:pop .55s cubic-bezier(.2,1.6,.4,1); }
+  .force-sub{ font-size:14px; color:var(--muted); animation:pop .55s .15s cubic-bezier(.2,1.6,.4,1) backwards; }
+  @keyframes pop{ from{ transform:scale(.3); opacity:0; } 60%{ transform:scale(1.08); } to{ transform:scale(1); opacity:1; } }
+
+  #matchOverlay{ z-index:300; background:
+      radial-gradient(600px 400px at 50% 25%, rgba(253,80,104,.28), transparent 65%),
+      linear-gradient(165deg,#1b1030,#2d0f2f); flex-direction:column; }
+  .match-close{ position:absolute; top:calc(14px + env(safe-area-inset-top)); right:16px;
+    background:rgba(255,255,255,.1); color:#fff; border:none; width:38px; height:38px; border-radius:50%;
+    font-size:18px; cursor:pointer; }
+  .match-inner{ display:flex; flex-direction:column; align-items:center; text-align:center;
+    padding:24px; max-width:420px; }
+  .match-title{ font-size:clamp(36px,12vw,64px); font-weight:900; letter-spacing:1px;
+    background:linear-gradient(90deg,#ff5e7e,#ffb86c,#ff5e7e); -webkit-background-clip:text;
+    background-clip:text; color:transparent; animation:pop .6s cubic-bezier(.2,1.6,.4,1); }
+  .avatars{ display:flex; margin:22px 0 10px; animation:pop .6s .1s cubic-bezier(.2,1.6,.4,1) backwards; }
+  .av{ width:92px; height:92px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:40px; border:4px solid rgba(255,255,255,.85); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+  .av.you{ background:linear-gradient(140deg,#3d3a52,#23202e); margin-right:-18px; z-index:1; }
+  .av.roma{ background:linear-gradient(140deg,#3d1d8f,#fd5068); font-weight:900; color:#fff;
+    font-size:36px; margin-left:-18px; }
+  .av.roma.small{ width:38px; height:38px; font-size:16px; border-width:2px; margin:0; }
+  .match-text{ font-size:15px; line-height:1.55; color:rgba(255,255,255,.85); margin:4px 0 22px; }
+  .match-reason{ font-size:12.5px; color:var(--muted); margin:-16px 0 20px; }
+  .match-actions{ display:flex; flex-direction:column; gap:10px; width:100%; }
+  .btn{ border:none; border-radius:999px; padding:14px 20px; font-size:15px; font-weight:800;
+    cursor:pointer; transition:transform .15s; }
+  .btn:active{ transform:scale(.95); }
+  .btn.primary{ background:linear-gradient(90deg,#fd5068,#ff7e5f); color:#fff;
+    box-shadow:0 10px 30px rgba(253,80,104,.4); }
+  .btn.ghost{ background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.2); }
+  .btn.link{ background:none; color:var(--muted); font-weight:600; font-size:13px; padding:10px; }
+  .match-stats{ margin-top:18px; font-size:13px; color:#ffb3c0; font-weight:700; }
+
+  /* ── чат ───────────────────────────────── */
+  #chatOverlay{ z-index:400; background:var(--bg1); flex-direction:column; }
+  .chat-head{ display:flex; align-items:center; gap:12px; padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
+    border-bottom:1px solid rgba(255,255,255,.08); flex-shrink:0; width:100%; }
+  .chat-head b{ display:block; font-size:16px; }
+  .chat-status{ font-size:12px; color:#7dff9b; }
+  #chatBack{ background:rgba(255,255,255,.1); color:#fff; border:none; width:38px; height:38px;
+    border-radius:50%; font-size:22px; cursor:pointer; line-height:1; }
+  .msgs{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;
+    width:100%; max-width:640px; margin:0 auto; }
+  .msg{ max-width:78%; padding:11px 15px; border-radius:20px; font-size:14.5px; line-height:1.45;
+    animation:msgIn .25s ease-out; word-wrap:break-word; }
+  @keyframes msgIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
+  .msg.roma{ background:linear-gradient(140deg,#3d1d8f,#a3127e); color:#fff;
+    border-bottom-left-radius:6px; align-self:flex-start; }
+  .msg.user{ background:#241f36; color:var(--text); border-bottom-right-radius:6px; align-self:flex-end; }
+  .typing span{ display:inline-block; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.6);
+    margin-right:4px; animation:blink 1s infinite; }
+  .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink{ 0%,100%{opacity:.25} 50%{opacity:1} }
+  .chat-input{ display:flex; gap:10px; padding:12px 14px calc(14px + env(safe-area-inset-bottom));
+    flex-shrink:0; width:100%; max-width:640px; margin:0 auto; }
+  .chat-input input{ flex:1; background:#221d33; border:1px solid rgba(255,255,255,.12); color:#fff;
+    border-radius:999px; padding:12px 18px; font-size:16px; outline:none; }
+  .chat-input button{ width:48px; height:48px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(90deg,#fd5068,#ff7e5f); color:#fff; font-size:19px; }
+
+  @media (max-height:700px){
+    .logo{ font-size:17px; } .card{ height:min(66dvh,560px); }
+    .ctl.big{ width:60px; height:60px; font-size:25px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">Знакомство с Ромой <span class="flame">🔥</span></div>
+  <div class="sub">кандидатов в базе: <b>1</b> · онлайн: Рома</div>
+</header>
+
+<main class="stage">
+  <div class="card" id="card">
+    <div class="photo">
+      <img id="photoImg" src="roma.jpg" alt="Рома" onerror="this.style.display='none'">
+      <div class="photo-fallback">
+        <div class="pf-emoji">🕵️</div>
+        <div class="pf-title">фото засекречено</div>
+        <div class="pf-text">настоящее фото Ромы настолько классное,<br>что интернет его не выдержал</div>
+      </div>
+      <div class="badge-online">онлайн</div>
+    </div>
+    <div class="info">
+      <h1><span id="nameLine">Рома, 27</span> <span class="verified" title="подтверждён (мамой)">✅</span></h1>
+      <div class="distance">📍 в 0 км от тебя · Рома всегда рядом</div>
+      <p class="bio" id="bio"></p>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="stamp nope" id="stampNope">НЕ СМОГ 😬</div>
+    <div class="stamp like" id="stampLike">ЛАЙК ❤️</div>
+  </div>
+  <div class="ticker" id="ticker">Рома онлайн. Рома всегда онлайн.</div>
+</main>
+
+<nav class="controls">
+  <button class="ctl small orange" id="btnRewind" title="отменить">⏪</button>
+  <button class="ctl big red" id="btnNope" title="не нравится">✖️</button>
+  <button class="ctl med blue" id="btnSuper" title="супер-лайк">⭐</button>
+  <button class="ctl big green" id="btnLike" title="лайк">❤️</button>
+  <button class="ctl small purple" id="btnBoost" title="буст">⚡</button>
+</nav>
+
+<div class="toasts" id="toasts"></div>
+<div class="hearts-layer" id="heartsLayer"></div>
+
+<!-- «вы всё равно лайкнули Рому» -->
+<div class="overlay" id="forceOverlay">
+  <div class="force-text">ВЫ ВСЁ РАВНО<br>ЛАЙКНУЛИ РОМУ ❤️</div>
+  <div class="force-sub">свайп влево здесь не работает. никогда.</div>
+</div>
+
+<!-- экран мэтча -->
+<div class="overlay" id="matchOverlay">
+  <button class="match-close" id="btnCloseMatch" title="закрыть">✕</button>
+  <div class="match-inner">
+    <div class="match-title">ЭТО МАТЧ 💘</div>
+    <div class="avatars">
+      <div class="av you">🙂</div>
+      <div class="av roma">Р</div>
+    </div>
+    <p class="match-text">Вы и Рома понравились друг другу.<br>Честно — это было предсказуемо.</p>
+    <div class="match-reason" id="matchReason"></div>
+    <div class="match-actions">
+      <button class="btn primary" id="btnChat">Написать Роме 💬</button>
+      <button class="btn ghost" id="btnAgain">Лайкнуть ещё раз 💖</button>
+      <button class="btn link" id="btnShare">поделиться 🔗</button>
+    </div>
+    <div class="match-stats" id="matchStats"></div>
+  </div>
+</div>
+
+<!-- чат с Ромой -->
+<div class="overlay" id="chatOverlay">
+  <header class="chat-head">
+    <button id="chatBack">‹</button>
+    <div class="av roma small">Р</div>
+    <div><b>Рома</b><span class="chat-status">онлайн (он всегда онлайн)</span></div>
+  </header>
+  <div class="msgs" id="msgs"></div>
+  <form class="chat-input" id="chatForm">
+    <input id="chatText" placeholder="Напиши Роме что-нибудь…" autocomplete="off" maxlength="200">
+    <button type="submit">➤</button>
+  </form>
+</div>
+
+<script>
+(() => {
+"use strict";
+const $ = s => document.getElementById(s);
+
+/* ══════════════════════════════════════════════════════════
+   КОНФИГ — меняй здесь всё про Рому
+   (фото: положи файл roma.jpg рядом с index.html)
+   ══════════════════════════════════════════════════════════ */
+const CONFIG = {
+  name: "Рома",
+  age: 27,
+  bio:
+`Ищу человека, который дочитает это описание до конца (ты уже почти ✅)
+
+• Открываю банки с огурцами без усилий
+• Умею готовить пасту (это когда макароны варишь)
+• Спортивный: до холодильника добегаю за 3 секунды
+• Был на ТВ (в толпе на матче, но кадр мой)
+• С чувством юмора — я же сам это написал
+
+Не идеальный. Зато один в базе — конкуренция ноль.
+Мама одобряет. Проверено.`,
+  chips: ["🏆 №1 из 1", "✅ подтверждён мамой", "🚭 не курю (почти)", "🎧 плейлист: только хиты", "🛠 починю кран (духовно)"]
+};
+
+/* ── DOM ── */
+const card = $("card"), stampLike = $("stampLike"), stampNope = $("stampNope"),
+      toasts = $("toasts"), heartsLayer = $("heartsLayer"), ticker = $("ticker"),
+      forceOverlay = $("forceOverlay"), matchOverlay = $("matchOverlay"),
+      chatOverlay = $("chatOverlay"), msgs = $("msgs");
+
+/* ── состояние ── */
+let leftSwipes = 0;
+let likes = parseInt(localStorage.getItem("roma_likes") || "0", 10);
+let photoTaps = 0, dodges = 0, busy = false;
+let chatSeeded = false;
+
+const EMOJIS = ["❤️","💖","💘","💕","😍","🔥","✨"];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* ── инициализация анкеты из конфига ── */
+$("nameLine").textContent = CONFIG.name + ", " + CONFIG.age;
+$("bio").textContent = CONFIG.bio;
+$("chips").innerHTML = CONFIG.chips.map(c => `<span class="chip">${c}</span>`).join("");
+document.title = "Знакомство с " + CONFIG.name + " 🔥";
+
+/* ── фоновые сердечки ── */
+for (let i = 0; i < 8; i++) {
+  const h = document.createElement("div");
+  h.className = "bg-heart"; h.textContent = pick(EMOJIS);
+  h.style.left = (5 + Math.random() * 90) + "vw";
+  h.style.fontSize = (24 + Math.random() * 40) + "px";
+  h.style.animationDuration = (14 + Math.random() * 16) + "s";
+  h.style.animationDelay = (-Math.random() * 20) + "s";
+  document.body.appendChild(h);
+}
+
+/* ── тосты ── */
+function toast(msg, ms = 2800) {
+  const t = document.createElement("div");
+  t.className = "toast"; t.textContent = msg;
+  toasts.appendChild(t);
+  requestAnimationFrame(() => t.classList.add("show"));
+  setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, ms);
+  while (toasts.children.length > 3) toasts.firstChild.remove();
+}
+
+/* ── дождь из сердечек ── */
+function hearts(n = 14) {
+  for (let i = 0; i < n; i++) {
+    const h = document.createElement("div");
+    h.className = "heart"; h.textContent = pick(EMOJIS);
+    h.style.left = (8 + Math.random() * 84) + "vw";
+    h.style.fontSize = (18 + Math.random() * 28) + "px";
+    h.style.animationDuration = (1 + Math.random() * 1.3) + "s";
+    h.style.animationDelay = (Math.random() * 0.5) + "s";
+    heartsLayer.appendChild(h);
+    setTimeout(() => h.remove(), 2900);
+  }
+}
+
+/* ── звук мэтча ── */
+let actx;
+function beep() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime;
+    [[523.25, 0], [659.25, .12], [783.99, .24]].forEach(([f, d]) => {
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t + d);
+      g.gain.exponentialRampToValueAtTime(0.16, t + d + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.3);
+      o.connect(g).connect(actx.destination);
+      o.start(t + d); o.stop(t + d + 0.35);
+    });
+  } catch (e) {}
+}
+
+/* ── свайпы ── */
+let drag = null;
+card.addEventListener("pointerdown", e => {
+  if (busy) return;
+  drag = { x: e.clientX, y: e.clientY, moved: false };
+  try { card.setPointerCapture(e.pointerId); } catch (err) {}
+  card.style.transition = "none";
+});
+card.addEventListener("pointermove", e => {
+  if (!drag || busy) return;
+  const dx = e.clientX - drag.x, dy = (e.clientY - drag.y) * 0.25;
+  if (Math.abs(dx) > 8) drag.moved = true;
+  card.style.transform = `translate(${dx}px, ${dy}px) rotate(${dx * 0.06}deg)`;
+  const p = Math.min(1, Math.abs(dx) / 90);
+  if (dx > 0) {
+    stampLike.style.opacity = p; stampLike.style.transform = `rotate(14deg) scale(${0.7 + p * 0.5})`;
+    stampNope.style.opacity = 0;
+  } else {
+    stampNope.style.opacity = p; stampNope.style.transform = `rotate(-14deg) scale(${0.7 + p * 0.5})`;
+    stampLike.style.opacity = 0;
+  }
+});
+card.addEventListener("pointerup", e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x, moved = drag.moved;
+  drag = null;
+  stampLike.style.opacity = 0; stampNope.style.opacity = 0;
+  if (busy) return;
+  if (!moved) { tapPhoto(); resetCard(); return; }
+  if (dx > 90) like(); else if (dx < -90) nope(); else resetCard();
+});
+card.addEventListener("pointercancel", () => { drag = null; resetCard(); });
+card.addEventListener("contextmenu", e => e.preventDefault());
+
+function resetCard(spring = true) {
+  card.style.transition = spring ? "transform .45s cubic-bezier(.2,1.6,.4,1)" : "none";
+  card.style.transform = "";
+  void card.offsetWidth; // reflow, чтобы «none» применился мгновенно
+  if (!spring) card.style.transition = "";
+}
+
+/* тап по карточке — пасхалка */
+function tapPhoto() {
+  photoTaps++;
+  if (photoTaps === 5) {
+    toast("Рома почувствовал, что на него смотрят 👀");
+    hearts(10);
+    photoTaps = 0;
+  }
+}
+
+/* ── ЛАЙК ── */
+function like() {
+  if (busy) return; busy = true;
+  const W = (window.innerWidth || 360) + 160;
+  card.style.transition = "transform .5s ease-in";
+  card.style.transform = `translate(${W}px, -60px) rotate(30deg)`;
+  hearts(16);
+  setTimeout(() => doMatch("Свайп вправо — единственное верное решение 😌"), 420);
+}
+
+/* ── СВАЙП ВЛЕВО (не works) ── */
+const NOPE_TOASTS = [
+  "Рома заблокировал эту функцию 🔒",
+  "Свайп влево не сработал. Такие, как Рома, на одну ночь не заканчиваются... то есть не заканчиваются.",
+  "Хм. Рома сделал вид, что не заметил. Но заметил. И запомнил 📝",
+  "Ошибка 403: отказать Роме нельзя"
+];
+function nope() {
+  if (busy) return; busy = true;
+  leftSwipes++;
+  const W = (window.innerWidth || 360) + 160;
+  card.style.transition = "transform .45s ease-in";
+  card.style.transform = `translate(${-W}px, 50px) rotate(-28deg)`;
+
+  if (leftSwipes === 1) {
+    // первый раз: карточка возвращается как ни в чём не бывало
+    setTimeout(() => { resetCard(); busy = false; toast(NOPE_TOASTS[0]); }, 480);
+  } else {
+    // второй и далее: РОМА ПЕРЕХВАТЫВАЕТ УПРАВЛЕНИЕ
+    setTimeout(() => toast("Рома перехватил управление 🖐️"), 520);
+    setTimeout(() => resetCard(true), 1050);
+    setTimeout(() => {
+      forceOverlay.classList.add("show");
+      hearts(28); beep();
+      if (navigator.vibrate) navigator.vibrate([90, 70, 140]);
+    }, 1550);
+    setTimeout(() => {
+      forceOverlay.classList.remove("show");
+      doMatch("Свайп влево? Не в этой вселенной ❤️");
+    }, 3500);
+  }
+}
+
+/* ── МЭТЧ ── */
+function plural(n) {
+  const a = n % 10, b = n % 100;
+  if (a === 1 && b !== 11) return "раз";
+  if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return "раза";
+  return "раз";
+}
+function bumpLikes() {
+  likes++;
+  localStorage.setItem("roma_likes", likes);
+  $("matchStats").textContent = `Рому лайкнули: ${likes} ${plural(likes)}`;
+  return likes;
+}
+function doMatch(reason) {
+  bumpLikes();
+  $("matchReason").textContent = reason;
+  matchOverlay.classList.add("show");
+  beep();
+  if (navigator.vibrate) navigator.vibrate(200);
+  hearts(22);
+  resetCard(false);
+  busy = false;
+  if (likes > 0 && likes % 5 === 0) {
+    setTimeout(() => toast("Рома уже смущён 🙈 Может, хватит? (нет)"), 1400);
+  }
+}
+
+/* ── кнопки ── */
+$("btnLike").addEventListener("click", like);
+
+$("btnSuper").addEventListener("click", () => {
+  if (busy) return; busy = true;
+  toast("Супер-лайк! У Ромы нет шансов устоять 😳");
+  card.style.transition = "transform .5s ease-in";
+  card.style.transform = "translate(0, -120vh) rotate(0deg)";
+  hearts(14);
+  setTimeout(() => doMatch("Супер-лайк принят. Рома тронут до глубины души 🥹"), 480);
+});
+
+/* кнопка «нет» уворачивается */
+const DODGES = [
+  "Кнопка «нет» чисто декоративная 🎨",
+  "Не-а 😜",
+  "Рома поставил на неё защиту 🔒",
+  "Ладно, нажми уже…"
+];
+$("btnNope").addEventListener("click", function (e) {
+  if (dodges < 3) {
+    const dx = (Math.random() > 0.5 ? 1 : -1) * (30 + Math.random() * 55);
+    const dy = -(10 + Math.random() * 45);
+    this.style.transition = "transform .18s cubic-bezier(.2,1.6,.4,1)";
+    this.style.transform = `translate(${dx}px, ${dy}px) rotate(${dx * 0.4}deg)`;
+    toast(DODGES[dodges]);
+    dodges++;
+  } else {
+    nope();
+  }
+});
+
+$("btnRewind").addEventListener("click", () =>
+  toast("Отменить можно всё, кроме лайка Роме 🔒"));
+$("btnBoost").addEventListener("click", () =>
+  toast("Буст не нужен: Рома и так №1 из 1 кандидата 🏆"));
+
+$("btnCloseMatch").addEventListener("click", () => {
+  matchOverlay.classList.remove("show");
+  resetCard(false);
+});
+
+$("btnAgain").addEventListener("click", () => {
+  bumpLikes();
+  hearts(16);
+  toast(pick([
+    "Рома польщён 🥹",
+    "+1 к роминой самооценке (её и так хватало)",
+    "Рома делает вид, что не считает. Рома считает 📊",
+    "Ещё один! Рома уже выбирает костюм на свадьбу 🤵",
+    "Рома передаёт маме привет. Мама уже накрывает на стол 🍲"
+  ]));
+});
+
+$("btnShare").addEventListener("click", async () => {
+  const data = {
+    title: "Знакомство с Ромой 🔥",
+    text: "Сайтов миллионы. Рома — один.",
+    url: location.href
+  };
+  if (navigator.share) {
+    try { await navigator.share(data); } catch (e) {}
+  } else if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      toast("Ссылка скопирована 🔗 Неси друзей знакомиться с Ромой");
+    } catch (e) {}
+  }
+});
+
+/* ── бегущая строка ── */
+const TICKS = [
+  "Рома онлайн. Рома всегда онлайн.",
+  "Новых анкет рядом: 0. И не планируется.",
+  "Рома просмотрел твой профиль… и одобрил ✅",
+  "Сейчас рядом с тобой: 1 человек. Угадай, кто.",
+  "Совет дня: свайпай вправо, так быстрее.",
+  "Уже 100% пользователей сайта выбрали Рому.",
+  "Рома не читает сообщения. Рома их изучает."
+];
+let tick = 0;
+setInterval(() => {
+  ticker.style.opacity = 0;
+  setTimeout(() => {
+    tick = (tick + 1) % TICKS.length;
+    ticker.textContent = TICKS[tick];
+    ticker.style.opacity = 1;
+  }, 400);
+}, 7000);
+
+/* ── ЧАТ С РОМОЙ ── */
+function addMsg(text, who) {
+  const m = document.createElement("div");
+  m.className = "msg " + who;
+  m.textContent = text;
+  msgs.appendChild(m);
+  msgs.scrollTop = msgs.scrollHeight;
+  return m;
+}
+function romaReply(text) {
+  const typing = document.createElement("div");
+  typing.className = "msg roma typing";
+  typing.innerHTML = "<span></span><span></span><span></span>";
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => {
+    typing.remove();
+    addMsg(text, "roma");
+  }, 800 + Math.random() * 1200);
+}
+
+const REPLIES = [
+  "Рома не понял, но Рома за 👍",
+  "Ха-ха! Рома тоже так думал, когда писал сообщения сам себе.",
+  "Рома бы ответил развёрнуто, но он занят — лежит.",
+  "Кстати, тебя уже кто-то лайкнул. Это был Рома.",
+  "Давай встретимся! Рома свободен всегда.",
+  "Это сообщение Рома набирал 4 часа. Цени.",
+  "Рома сейчас на пробежке… шучу, Рома на диване 🛋",
+  "Ты нравишься Роме. Это уже написано на сайте, но Рома повторил лично.",
+  "Ты выбрал(а) лучшего из 1 кандидата. Рома горд собой.",
+  "Мама Ромы уже знает о тебе. Она в восторге (Рома спросил).",
+  "Рома согласен с любым твоим сообщением. Рома добрый.",
+  "Секунду, Рома смотрится в зеркало… ладно, Рома вернулся 😎"
+];
+function replyFor(text) {
+  const t = text.toLowerCase();
+  if (/прив|хай|здоров|добрый|добр/.test(t))
+    return "Привет-привет! Наконец-то. Рома ждал. Ну, Рома вообще всегда ждёт — он тут один.";
+  if (/денег|деньг|займ|кредит|перевед/.test(t))
+    return "Рома бы занял, но все деньги ушли на этот сайт 😔";
+  if (/\?$/.test(t.trim()))
+    return "Отличный вопрос. Ромина интуиция подсказывает: да. Однозначно да.";
+  if (/люб/.test(t))
+    return "Рома тоже, но не спеши — сначала знакомство с мамой Ромы. Она в приоритете.";
+  if (/свидан|встрет|погу|кино|кофе/.test(t))
+    return "Давай! Рома свободен всегда. Рома занят только собой.";
+  if (/пока|до свид|прощай|удали/.test(t))
+    return "Пока… Рома будет здесь. Рома никуда не денется (ему некуда).";
+  return pick(REPLIES);
+}
+
+$("btnChat").addEventListener("click", () => {
+  chatOverlay.classList.add("show");
+  if (!chatSeeded) {
+    chatSeeded = true;
+    setTimeout(() => romaReply("Привет! Ты быстро. Рома это уважает 😎"), 600);
+    setTimeout(() => {
+      if (msgs.querySelector(".user") === null)
+        romaReply("Не молчи, Рома волнуется 😅");
+    }, 9000);
+  }
+});
+$("chatBack").addEventListener("click", () => chatOverlay.classList.remove("show"));
+
+$("chatForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = $("chatText");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  addMsg(text, "user");
+  romaReply(replyFor(text));
+});
+
+/* ── Рома скучает, когда уходишь со вкладки ── */
+document.addEventListener("visibilitychange", () => {
+  document.title = document.hidden
+    ? "Рома скучает 👀"
+    : "Знакомство с " + CONFIG.name + " 🔥";
+});
+
+})();
+</script>
+</body>
+</html>
