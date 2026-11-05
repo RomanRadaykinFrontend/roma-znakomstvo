@@ -49,32 +49,30 @@
     position:relative; min-height:0; padding:8px 0 4px; z-index:1; }
   .card{
     position:relative; display:flex; flex-direction:column;
-    width:min(92vw,400px); height:min(70dvh,640px);
+    width:min(92vw,400px); height:min(78dvh,690px);
     background:#11101e; border-radius:22px; overflow:hidden;
     box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06);
     touch-action:none; cursor:grab; will-change:transform;
   }
   .card:active{ cursor:grabbing; }
-  .photo{ position:relative; flex:1; min-height:0; overflow:hidden; background:linear-gradient(150deg,#3d1d8f,#b31286 55%,#fd5068); }
-  .photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; -webkit-user-drag:none; }
-  .photo-fallback{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
-    justify-content:center; text-align:center; padding:24px; gap:8px; }
-  .pf-emoji{ font-size:64px; animation:peek 3s ease-in-out infinite; }
-  @keyframes peek{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-  .pf-title{ font-size:19px; font-weight:900; letter-spacing:2px; text-transform:uppercase; }
-  .pf-text{ font-size:12.5px; color:rgba(255,255,255,.8); line-height:1.5; }
+  .photo{ position:relative; flex:1; min-height:0; overflow:hidden; background:#171226; }
+  .photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; -webkit-user-drag:none; }
+  .tg-btn{ display:flex; align-items:center; justify-content:center; gap:8px; margin-top:12px;
+    padding:11px 16px; border-radius:999px; background:linear-gradient(90deg,#2aabee,#229ed9); color:#fff;
+    font-size:13.5px; font-weight:800; text-decoration:none; box-shadow:0 6px 18px rgba(42,171,238,.35); }
+  .tg-btn:active{ transform:scale(.96); }
   .badge-online{ position:absolute; top:12px; right:12px; background:rgba(0,0,0,.45);
     backdrop-filter:blur(6px); border-radius:999px; padding:4px 10px; font-size:11.5px;
     font-weight:700; color:#7dff9b; }
   .badge-online::before{ content:"● "; animation:pulse 1.6s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
 
-  .info{ flex-shrink:0; background:#fbfbfe; color:#23202e; padding:14px 16px 14px; }
+  .info{ flex-shrink:0; background:#fbfbfe; color:#23202e; padding:12px 14px; }
   .info h1{ margin:0; font-size:22px; font-weight:900; }
   .verified{ font-size:14px; cursor:help; }
   .distance{ font-size:12px; color:#7a7590; margin:2px 0 8px; }
-  .bio{ margin:0; font-size:13.5px; line-height:1.5; white-space:pre-line; }
-  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .bio{ margin:0; font-size:13px; line-height:1.45; white-space:pre-line; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
   .chip{ font-size:11px; font-weight:700; color:#4a4560; border:1.5px solid #d9d6e6;
     border-radius:999px; padding:4px 10px; }
 
@@ -149,7 +147,7 @@
   .match-reason{ font-size:12.5px; color:var(--muted); margin:-16px 0 20px; }
   .match-actions{ display:flex; flex-direction:column; gap:10px; width:100%; }
   .btn{ border:none; border-radius:999px; padding:14px 20px; font-size:15px; font-weight:800;
-    cursor:pointer; transition:transform .15s; }
+    cursor:pointer; transition:transform .15s; text-align:center; text-decoration:none; }
   .btn:active{ transform:scale(.95); }
   .btn.primary{ background:linear-gradient(90deg,#fd5068,#ff7e5f); color:#fff;
     box-shadow:0 10px 30px rgba(253,80,104,.4); }
@@ -165,6 +163,9 @@
   .chat-status{ font-size:12px; color:#7dff9b; }
   #chatBack{ background:rgba(255,255,255,.1); color:#fff; border:none; width:38px; height:38px;
     border-radius:50%; font-size:22px; cursor:pointer; line-height:1; }
+  .chat-tg{ margin-left:auto; align-self:center; width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(90deg,#2aabee,#229ed9); color:#fff; text-decoration:none; font-size:17px;
+    display:flex; align-items:center; justify-content:center; }
   .msgs{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;
     width:100%; max-width:640px; margin:0 auto; }
   .msg{ max-width:78%; padding:11px 15px; border-radius:20px; font-size:14.5px; line-height:1.45;
@@ -185,7 +186,7 @@
     background:linear-gradient(90deg,#fd5068,#ff7e5f); color:#fff; font-size:19px; }
 
   @media (max-height:700px){
-    .logo{ font-size:17px; } .card{ height:min(66dvh,560px); }
+    .logo{ font-size:17px; } .card{ height:min(72dvh,610px); }
     .ctl.big{ width:60px; height:60px; font-size:25px; }
   }
 </style>
@@ -194,25 +195,21 @@
 
 <header class="topbar">
   <div class="logo">Знакомство с Ромой <span class="flame">🔥</span></div>
-  <div class="sub">кандидатов в базе: <b>1</b> · онлайн: Рома</div>
+  <div class="sub">кандидатов в базе: <b>1</b> · Саратов · онлайн: Рома</div>
 </header>
 
 <main class="stage">
   <div class="card" id="card">
     <div class="photo">
-      <img id="photoImg" src="roma.jpg" alt="Рома" onerror="this.style.display='none'">
-      <div class="photo-fallback">
-        <div class="pf-emoji">🕵️</div>
-        <div class="pf-title">фото засекречено</div>
-        <div class="pf-text">настоящее фото Ромы настолько классное,<br>что интернет его не выдержал</div>
-      </div>
+      <img id="photoImg" src="roma.jpg" alt="Рома">
       <div class="badge-online">онлайн</div>
     </div>
     <div class="info">
       <h1><span id="nameLine">Рома, 27</span> <span class="verified" title="подтверждён (мамой)">✅</span></h1>
-      <div class="distance">📍 в 0 км от тебя · Рома всегда рядом</div>
+      <div class="distance">📍 Саратов · в 0 км от тебя</div>
       <p class="bio" id="bio"></p>
       <div class="chips" id="chips"></div>
+      <a class="tg-btn" id="cardTgLink" target="_blank" rel="noopener">✈️ Написать Роме в Telegram</a>
     </div>
     <div class="stamp nope" id="stampNope">НЕ СМОГ 😬</div>
     <div class="stamp like" id="stampLike">ЛАЙК ❤️</div>
@@ -249,7 +246,8 @@
     <p class="match-text">Вы и Рома понравились друг другу.<br>Честно — это было предсказуемо.</p>
     <div class="match-reason" id="matchReason"></div>
     <div class="match-actions">
-      <button class="btn primary" id="btnChat">Написать Роме 💬</button>
+      <a class="btn primary" id="matchTgLink" target="_blank" rel="noopener">Написать Роме в Telegram ✈️</a>
+      <button class="btn ghost" id="btnChatFake">Пофлудить с автоответчиком 🤖</button>
       <button class="btn ghost" id="btnAgain">Лайкнуть ещё раз 💖</button>
       <button class="btn link" id="btnShare">поделиться 🔗</button>
     </div>
@@ -263,6 +261,7 @@
     <button id="chatBack">‹</button>
     <div class="av roma small">Р</div>
     <div><b>Рома</b><span class="chat-status">онлайн (он всегда онлайн)</span></div>
+    <a class="chat-tg" id="chatTgLink" target="_blank" rel="noopener" title="настоящий Рома — тут">✈️</a>
   </header>
   <div class="msgs" id="msgs"></div>
   <form class="chat-input" id="chatForm">
@@ -283,13 +282,11 @@ const $ = s => document.getElementById(s);
 const CONFIG = {
   name: "Рома",
   age: 27,
+  tg: "radaykinro", // телеграм Ромы — сюда реально будут писать
   bio:
-`Ищу человека, который дочитает это описание до конца (ты уже почти ✅)
-
-• Открываю банки с огурцами без усилий
+`• Открываю банки с огурцами без усилий
 • Умею готовить пасту (это когда макароны варишь)
 • Спортивный: до холодильника добегаю за 3 секунды
-• Был на ТВ (в толпе на матче, но кадр мой)
 • С чувством юмора — я же сам это написал
 
 Не идеальный. Зато один в базе — конкуренция ноль.
@@ -316,6 +313,8 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 /* ── инициализация анкеты из конфига ── */
 $("nameLine").textContent = CONFIG.name + ", " + CONFIG.age;
 $("bio").textContent = CONFIG.bio;
+const tgUrl = "https://t.me/" + CONFIG.tg;
+["cardTgLink", "matchTgLink", "chatTgLink"].forEach(id => { const el = $(id); if (el) el.href = tgUrl; });
 $("chips").innerHTML = CONFIG.chips.map(c => `<span class="chip">${c}</span>`).join("");
 document.title = "Знакомство с " + CONFIG.name + " 🔥";
 
@@ -635,7 +634,7 @@ function replyFor(text) {
   return pick(REPLIES);
 }
 
-$("btnChat").addEventListener("click", () => {
+$("btnChatFake").addEventListener("click", () => {
   chatOverlay.classList.add("show");
   if (!chatSeeded) {
     chatSeeded = true;
